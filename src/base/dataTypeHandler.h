@@ -9,34 +9,34 @@
 #include <complex>
 
 typedef enum {
-    UNKNOWNDATATYPE,
-    BOOL,
-    INT8,
-    UINT8,
-    INT16,
-    UINT16,
-    INT32,
-    UINT32,
-    INT64,
-    UINT64,
-    FLOAT32,
-    FLOAT64,
-    FLOAT128,
-    COMPLEX64,
-    COMPLEX128,
-    COMPLEX256
+    UNKNOWN_DT,
+    BOOL_DT,
+    INT8_DT,
+    UINT8_DT,
+    INT16_DT,
+    UINT16_DT,
+    INT32_DT,
+    UINT32_DT,
+    INT64_DT,
+    UINT64_DT,
+    FLOAT32_DT,
+    FLOAT64_DT,
+    FLOAT128_DT,
+    COMPLEX64_DT,
+    COMPLEX128_DT,
+    COMPLEX256_DT
 } DATATYPE;
 
 
 using TypeInfoRef = std::reference_wrapper<const std::type_info>;
- 
+
 struct Hasher {
     std::size_t operator()(TypeInfoRef code) const
     {
         return code.get().hash_code();
     }
 };
- 
+
 struct EqualTo {
     bool operator()(TypeInfoRef lhs, TypeInfoRef rhs) const
     {

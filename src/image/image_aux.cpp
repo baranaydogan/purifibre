@@ -55,21 +55,21 @@ void Image<T>::printInfo() {
     std::cout << "Datatype:               ";
 
     switch (inputDataType) {
-    
-        case UINT8:         std::cout << "UINT8";      break;
-        case INT8:          std::cout << "INT8";       break;
-        case UINT16:        std::cout << "UINT16";     break;
-        case INT16:         std::cout << "INT16";      break;
-        case UINT32:        std::cout << "UINT32";     break;
-        case INT32:         std::cout << "INT32";      break;
-        case UINT64:        std::cout << "UINT64";     break;
-        case INT64:         std::cout << "INT64";      break;
-        case FLOAT32:       std::cout << "FLOAT32";    break;
-        case FLOAT64:       std::cout << "FLOAT64";    break;
-        case FLOAT128:      std::cout << "FLOAT128";   break;
 
-        default:   
-            std::cout<<"Unknown data type"; 
+        case UINT8_DT:         std::cout << "UINT8";      break;
+        case INT8_DT:          std::cout << "INT8";       break;
+        case UINT16_DT:        std::cout << "UINT16";     break;
+        case INT16_DT:         std::cout << "INT16";      break;
+        case UINT32_DT:        std::cout << "UINT32";     break;
+        case INT32_DT:         std::cout << "INT32";      break;
+        case UINT64_DT:        std::cout << "UINT64";     break;
+        case INT64_DT:         std::cout << "INT64";      break;
+        case FLOAT32_DT:       std::cout << "FLOAT32";    break;
+        case FLOAT64_DT:       std::cout << "FLOAT64";    break;
+        case FLOAT128_DT:      std::cout << "FLOAT128";   break;
+
+        default:
+            std::cout<<"Unknown data type";
         break;
     }
 

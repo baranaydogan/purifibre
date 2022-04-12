@@ -63,11 +63,11 @@ void TractogramReader::destroyCopy(){
 
 
 bool TractogramReader::initReader(std::string _fileName) {
-    
+
     fileName   = _fileName;
     file       = fopen(fileName.c_str(),"r");
-    
-	if (file==NULL) 
+
+	if (file==NULL)
         return false;
 
 	const size_t strLength = 256;
@@ -84,10 +84,11 @@ bool TractogramReader::initReader(std::string _fileName) {
         long pos = 0;
         do {
             fgets(dummy,strLength,file);
+
             tmps = std::string(dummy);
 
             size_t column = tmps.find_last_of(":");
-    
+
             if (column!=std::string::npos) {
                 std::string key = tmps.substr(0,column);
 
@@ -129,7 +130,7 @@ bool TractogramReader::initReader(std::string _fileName) {
         }
 
     }
-    
+
     if (extension == "trk") {
         fileFormat = TRK;
         // TODO: init TRK reader
@@ -137,38 +138,51 @@ bool TractogramReader::initReader(std::string _fileName) {
 
     if (extension == "vtk") {
 
+        long posData = 0;
         std::string vtkFormat;
 
         fgets(dummy,strLength,file);                        // vtk version
+        posData += std::string(dummy).length();
+        fseek(file,posData,SEEK_SET);
+
         fgets(dummy,strLength,file);                        // file description
         fileDescription = std::string(dummy);
         fileDescription = fileDescription.substr(0, fileDescription.size()-1);
-        std::fscanf(file,"%s\n",dummy);                     // ascii or binary
-        vtkFormat       = std::string(dummy);
-        fgets(dummy,strLength,file);                        // always DATASET POLYDATA, we skip to check this for now
-        std::fscanf(file,"%*s %zu %*s\n",&numberOfPoints);  // number of points and datatype, we assume datatype is float and skip checking this
-        long posData = ftell(file);
+        posData += std::string(dummy).length();
+        fseek(file,posData,SEEK_SET);
 
-        if      ((vtkFormat=="ascii" ) || (vtkFormat=="ASCII" )) fileFormat = VTK_ASCII;
-        else if ((vtkFormat=="binary") || (vtkFormat=="BINARY")) fileFormat = VTK_BINARY;
+        fgets(dummy,strLength,file);                        // ascii or binary
+        vtkFormat       = std::string(dummy);
+        posData += std::string(dummy).length();
+        fseek(file,posData,SEEK_SET);
+
+        fgets(dummy,strLength,file);                        // always DATASET POLYDATA, we skip to check this for now
+        posData += std::string(dummy).length();
+        fseek(file,posData,SEEK_SET);
+
+        fgets(dummy,strLength,file);                        // number of points and datatype, we assume datatype is float and skip checking this
+        std::sscanf(dummy,"%*s %zu %*s",&numberOfPoints);
+        posData += std::string(dummy).length();
+        fseek(file,posData,SEEK_SET);
+
+        if      ((vtkFormat=="ascii\n" ) || (vtkFormat=="ASCII\n" )) fileFormat = VTK_ASCII;
+        else if ((vtkFormat=="binary\n") || (vtkFormat=="BINARY\n")) fileFormat = VTK_BINARY;
         else return false;
-            
+
         if (numberOfPoints>0) {
 
             // Skip points
-            if (fileFormat==VTK_BINARY) {
+            if (fileFormat==VTK_BINARY)
                 std::fseek(file,sizeof(float)*numberOfPoints*3,SEEK_CUR);
-                int tmp = std::fgetc(file); if ( tmp != '\n') std::ungetc(tmp,file); // Make sure to go end of the line
-            } 
-            
+
             if (fileFormat==VTK_ASCII) {
                 for (size_t i=0; i<numberOfPoints; i++)
                     fgets(dummy,strLength,file);
             }
-    
-            // Get number of streamlines, lengths and streamlinePos
-            std::fscanf(file,"LINES %zu %*d\n",&numberOfStreamlines);
-            
+
+            fgets(dummy,strLength,file);
+            std::sscanf(dummy,"LINES %zu %*d",&numberOfStreamlines);
+
             len              = new uint32_t[numberOfStreamlines];
             streamlinePos    = new long[numberOfStreamlines];
             streamlinePos[0] = posData;
@@ -179,7 +193,7 @@ bool TractogramReader::initReader(std::string _fileName) {
                 swapByteOrder(tmp);
                 std::fseek(file,tmp*sizeof(int),SEEK_CUR);
                 len[0] = tmp;
-                
+
                 for (size_t i=1; i<numberOfStreamlines; i++) {
                     streamlinePos[i] = streamlinePos[i-1] + long(sizeof(float)*len[i-1]*3);
                     std::fread(&tmp,sizeof(int),1,file);
@@ -211,43 +225,43 @@ bool TractogramReader::initReader(std::string _fileName) {
             len                 = NULL;
             streamlinePos       = NULL;
         }
-        
-    }	
+
+    }
 
     return true;
 }
 
 float** TractogramReader::readStreamline(size_t n) {
-    
+
     float** points;
     points = new float*[len[n]];
-    
-    
+
+
     fseek(file,streamlinePos[n],SEEK_SET);
 
     if (fileFormat==TCK) {
         float tmp;
         for (uint32_t i=0; i<len[n]; i++) {
             points[i] = new float[3];
-        
+
             for (int j=0; j<3; j++) {
-                std::fread(&tmp,sizeof(float),1,file); 
+                std::fread(&tmp,sizeof(float),1,file);
                 points[i][j] = tmp;
             }
         }
     }
 
-    if (fileFormat==TRK) { 
-        // TODO 
+    if (fileFormat==TRK) {
+        // TODO
     }
 
     if (fileFormat==VTK_BINARY) {
         float tmp;
         for (uint32_t i=0; i<len[n]; i++) {
             points[i] = new float[3];
-        
+
             for (int j=0; j<3; j++) {
-                std::fread(&tmp,sizeof(float),1,file); 
+                std::fread(&tmp,sizeof(float),1,file);
                 swapByteOrder(tmp);
                 points[i][j] = tmp;
             }
@@ -262,31 +276,31 @@ float** TractogramReader::readStreamline(size_t n) {
         }
 
     }
-    
+
     return points;
-    
+
 }
 
 void TractogramReader::readPoint(size_t n, uint32_t l, float* point) {
 
     if (fileFormat==TCK) {
         fseek(file,streamlinePos[n]+sizeof(float)*3*l,SEEK_SET);
-        float tmp;            
+        float tmp;
         for (int j=0; j<3; j++) {
-            std::fread(&tmp,sizeof(float),1,file); 
+            std::fread(&tmp,sizeof(float),1,file);
             point[j] = tmp;
         }
     }
 
     if (fileFormat==TRK) {
-        // TODO 
+        // TODO
     }
 
     if (fileFormat==VTK_BINARY) {
         fseek(file,streamlinePos[n]+sizeof(float)*3*l,SEEK_SET);
         float tmp;
         for (int j=0; j<3; j++) {
-            std::fread(&tmp,sizeof(float),1,file); 
+            std::fread(&tmp,sizeof(float),1,file);
             swapByteOrder(tmp);
             point[j] = tmp;
         }
@@ -303,15 +317,15 @@ void TractogramReader::readPoint(size_t n, uint32_t l, float* point) {
         }
         std::fscanf(file,"%f %f %f\n",&point[0],&point[1],&point[2]);
     }
-    
+
 }
 
 
 std::vector<Point> TractogramReader::readVectorizedStreamline(size_t n) {
-    
+
     std::vector<Point> points;
     points.reserve(len[n]);
-    
+
     fseek(file,streamlinePos[n],SEEK_SET);
 
     if (fileFormat==TCK) {
@@ -325,8 +339,8 @@ std::vector<Point> TractogramReader::readVectorizedStreamline(size_t n) {
     }
 
 
-    if (fileFormat==TRK) { 
-        // TODO 
+    if (fileFormat==TRK) {
+        // TODO
     }
 
     if (fileFormat==VTK_BINARY) {
@@ -353,5 +367,5 @@ std::vector<Point> TractogramReader::readVectorizedStreamline(size_t n) {
     }
 
     return points;
-    
+
 }

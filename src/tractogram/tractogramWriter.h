@@ -16,8 +16,8 @@
 
 
 typedef enum {
-    STREAMLINE,
-    POINT,
+    STREAMLINE_OWNER,
+    POINT_OWNER,
     OWNER_NOTSET
 } TractogramOwnerType;
 
@@ -38,4 +38,3 @@ bool writeTractogram(std::string out_fname,std::string inp_fname,std::vector<siz
 bool writeTractogram(std::string out_kept_fname,std::string out_rmvd_fname,std::string inp_fname,std::vector<size_t>& idx);
 
 #endif
-

@@ -18,7 +18,7 @@ namespace CMDARGS_PURIFIBRE {
 
     float                   voxDim = 0;
     std::tuple<float,int>   anisotropicSmoothing (std::make_tuple(0,0));
-    float                   sphericalSmoothing = 30;
+    float                   sphericalSmoothing = 15;
 
     int                     numberOfThreads = 0;
     bool                    verbose         = false;
