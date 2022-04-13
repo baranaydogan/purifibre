@@ -10,9 +10,9 @@ Purifibre cleans tractograms. It is a single word command line tool for Linux an
 purifibre <input> <output> [OPTIONS]
 ```
 
-<input>: can be a .vtk or .tck file
+- **input**: can be a .vtk or .tck file
 
-<output>: only .vtk output is supported.
+- **output**: only .vtk output is supported.
 
 
 
@@ -81,7 +81,7 @@ git clone https://github.com/baranaydogan/purifibre
 
 ---
 
-### License
+## License
 
 Purifibre is distributed under a 3-Clause BSD license. For command line parsing it uses the beatiful [CLI11](https://github.com/CLIUtils/CLI11), developed by Henri Schreiner.
 
