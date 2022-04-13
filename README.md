@@ -2,6 +2,8 @@
 
 Purifibre cleans tractograms. It is a single word command line tool for Linux and Windows.
 
+<img title="" src="demo.png" alt="Real-time tractogram visualizer" width="700" class="center">
+
 #### Usage:
 
 ```shell
