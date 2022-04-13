@@ -17,7 +17,7 @@ namespace CMDARGS_PURIFIBRE {
     float                   puriFactor  = 5;
 
     float                   voxDim = 0;
-    std::tuple<float,int>   anisotropicSmoothing (std::make_tuple(0,0));
+    std::tuple<float,int>   anisotropicSmoothing (std::make_tuple(0.0f,0));
     float                   sphericalSmoothing = 15;
 
     int                     numberOfThreads = 0;
@@ -86,7 +86,7 @@ void purify()
 
     
     // Compute SECO and FICO
-    std::vector<std::tuple<size_t,float>> fico;
+    std::vector<std::tuple<uint64_t,float>> fico;
     fico.resize(N);
 
     auto run = [&](MTTASK task)->void {
@@ -138,7 +138,7 @@ void purify()
         writeTractogram(out_fico,tractogram);
 
         FILE *out;
-	    out = fopen(out_fico.c_str(),"ab");
+	    out = fopen(out_fico.c_str(),"ab+");
 
         char buffer[256];
 

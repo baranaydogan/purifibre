@@ -7,7 +7,7 @@ bool writeTractogram(std::string fname,std::vector<std::vector<std::vector<float
 
     // Prepare output
     FILE *out;
-	out = fopen(fname.c_str(),"wb");
+	out = fopen(fname.c_str(),"wb+");
 	if (out==NULL) {
 		std::cout << "Cannot write output. Output path doesn't exist." << std::endl;
 		return false;
@@ -76,7 +76,7 @@ bool writeTractogram(std::string out_fname,TractogramReader* tractogram,std::vec
 
     // Prepare output
     FILE *out;
-	out = fopen(out_fname.c_str(),"wb");
+	out = fopen(out_fname.c_str(),"wb+");
 	if (out==NULL) {
 		std::cout << "Cannot write output. Output path doesn't exist." << std::endl;
 		return false;
@@ -146,7 +146,7 @@ bool writeTractogram(std::string out_fname,TractogramReader* tractogram) {
 
     // Prepare output
     FILE *out;
-	out = fopen(out_fname.c_str(),"wb");
+	out = fopen(out_fname.c_str(),"wb+");
 	if (out==NULL) {
 		std::cout << "Cannot write output. Output path doesn't exist." << std::endl;
 		return false;
@@ -234,24 +234,11 @@ bool writeTractogram(std::string out_kept_fname,std::string out_rmvd_fname,std::
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 bool writeTractogram(std::string fname,std::vector<std::vector<std::vector<float>>>& tractogram,std::vector<TractogramField>& fields) {
 
     // Prepare output
     FILE *out;
-	out = fopen(fname.c_str(),"wb");
+	out = fopen(fname.c_str(),"wb+");
 	if (out==NULL) {
 		std::cout << "Cannot write output. Output path doesn't exist." << std::endl;
 		return false;
