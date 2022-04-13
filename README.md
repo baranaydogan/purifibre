@@ -4,19 +4,19 @@ Purifibre cleans tractograms. It is a single word command line tool for Linux an
 
 
 
-###### Usage:
+#### Usage:
 
 ```shell
 purifibre <input> <output> [OPTIONS]
 ```
 
- can be a .vtk or .tck file
+<input>: can be a .vtk or .tck file
 
-only .vtk output is supported.
+<output>: only .vtk output is supported.
 
 
 
-###### Options:
+#### Options:
 
 - **-p,--purify** FLOAT: Percentage of streamlines to remove from the tractogram. Default: 5.
 
@@ -38,7 +38,7 @@ only .vtk output is supported.
 
 
 
-###### Citation:
+#### Citation:
 
 > Aydogan D. B. "Fiber coupling (FICO) measure using anisotropic smoothing of track orientation density images for tractogram filtering", ISMRM 2022
 
