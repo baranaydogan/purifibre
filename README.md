@@ -46,7 +46,7 @@ purifibre <input> <output> [OPTIONS]
 
 
 
-
+---
 
 ## Installation
 
@@ -79,7 +79,7 @@ git clone https://github.com/baranaydogan/purifibre
 
 
 
-
+---
 
 ### License
 
