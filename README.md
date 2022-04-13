@@ -2,8 +2,6 @@
 
 Purifibre cleans tractograms. It is a single word command line tool for Linux and Windows.
 
-
-
 #### Usage:
 
 ```shell
@@ -13,8 +11,6 @@ purifibre <input> <output> [OPTIONS]
 - **input**: can be a .vtk or .tck file
 
 - **output**: only .vtk output is supported.
-
-
 
 #### Options:
 
@@ -36,29 +32,29 @@ purifibre <input> <output> [OPTIONS]
 
 - **-f,--force**: Force overwriting of existing output
 
+#### Tips:
 
+For deeper cleaning, try decreasing voxDim and increasing anisotropic smoothing.
+
+###### Example:
+
+```shell
+purifibre <input> <output> --voxDim 1 --anisotropicSmoothing 2 100
+```
 
 #### Citation:
 
 > Aydogan D. B. "Fiber coupling (FICO) measure using anisotropic smoothing of track orientation density images for tractogram filtering", ISMRM 2022
 
-
-
-
-
 ---
 
 ## Installation
-
-
 
 ##### Stand-alone executables:
 
 - *Linux* executable: [purifibre_linux_v0.1](https://github.com/baranaydogan/purifibre/blob/main/binaries/purifibre_linux_v0.1).
 
 - *Windows* executable: [purifibre_win_v0.1.exe](https://github.com/baranaydogan/purifibre/blob/main/binaries/purifibre_win_v0.1.exe).
-
-
 
 ##### Building from source:
 
@@ -75,17 +71,11 @@ git clone https://github.com/baranaydogan/purifibre
 
 **Step 3.** Run the build script. This will build **purifibre** under <PurifibreFolder>/build/install
 
-
-
-
-
 ---
 
 ## License
 
 Purifibre is distributed under a 3-Clause BSD license. For command line parsing it uses the beatiful [CLI11](https://github.com/CLIUtils/CLI11), developed by Henri Schreiner.
-
-
 
 ---
 
